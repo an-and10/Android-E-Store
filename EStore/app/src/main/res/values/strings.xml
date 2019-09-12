@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">E-Store</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_email">Enter Email</string>
+    <string name="hint_password">Enter Password</string>
+    <string name="sign_in_btn">Sign In</string>
+    <string name="sign_in_signup_btn">Need An Account? Sign Up Here</string>
+    <string name="sign_up_name">Enter Name</string>
+    <string name="sign_up_c_password_hint">Confirm Password</string>
+    <string name="already_hacve_an_account">Already have an Account? Sign In here</string>
+    <string name="sign_up">Sign Up</string>
+</resources>
