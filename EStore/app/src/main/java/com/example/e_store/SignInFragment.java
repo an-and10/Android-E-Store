@@ -29,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
 
+import static com.example.e_store.RegisterActivity.isForgetPasswordFragment;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -91,6 +93,7 @@ public class SignInFragment extends Fragment {
         forget_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isForgetPasswordFragment = true;
                 setFragment(new ResetPasswordFragment());
             }
         });
