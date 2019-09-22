@@ -15,7 +15,11 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +56,19 @@ public class HomeFragment extends Fragment {
 
 
     // code for strip ends here//
+    /* Code for Horizontal Product */
 
+    private Button horizontalProductViewAllBtn;
+    private TextView horizontalProductTitle;
+    private  RecyclerView horizontalProductRecycler;
+
+
+
+
+    /* Code ends here for horizontal Product   */
+
+    // Code for Grid Layout//
+    private GridLayout gridLayout;
 
     @SuppressLint("ResourceType")
     @Override
@@ -90,7 +106,7 @@ public class HomeFragment extends Fragment {
         sliderModelList.add(new sliderModel(R.mipmap.error_icons,"#0774AE4"));
 
         sliderModelList.add(new sliderModel(R.mipmap.red_email,"#0774AE4"));
-        sliderModelList.add(new sliderModel(R.mipmap.notifications,"#0774AE4"));
+        sliderModelList.add(new sliderModel(R.mipmap.my_orders,"#acdacd"));
         sliderModelList.add(new sliderModel(R.mipmap.flipkart_logo,"#0774AE4"));
         sliderModelList.add(new sliderModel(R.mipmap.cross_btn,"#0774AE4"));
         sliderModelList.add(new sliderModel(R.mipmap.ic_launcher,"#0774AE4"));
@@ -99,7 +115,7 @@ public class HomeFragment extends Fragment {
 
 
         sliderModelList.add(new sliderModel(R.mipmap.red_email,"#0774AE4"));
-        sliderModelList.add(new sliderModel(R.mipmap.notifications,"#0774AE4"));
+        sliderModelList.add(new sliderModel(R.mipmap.my_orders,"#acdacd"));
 
 
         SliderAdapter sliderAdapter = new SliderAdapter(sliderModelList);
@@ -153,13 +169,53 @@ public class HomeFragment extends Fragment {
 
         stripAdImage.setImageResource(R.drawable.mum1);
         stripAdContainer.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#000000")));
-        /* code for Strip Add image */
+        /* code for  Ends here for Strip Add image */
+        /* Horizontal Product Code start here */
+
+        horizontalProductViewAllBtn = view.findViewById(R.id.horizontal_scroll_layout_btn);
+        horizontalProductTitle = view.findViewById(R.id.horizontal_scroll_layout_title);
+        horizontalProductRecycler = view.findViewById(R.id.horizontal_scroll_product_recyclerview);
+
+
+        List<HorizontalScrollProductModel>horizontalScrollProductModelList = new ArrayList<>();
+        horizontalScrollProductModelList.add(new HorizontalScrollProductModel(R.drawable.phone1,"Redmi 5A","Intel Core Processor","Rs. 5999"));
+        horizontalScrollProductModelList.add(new HorizontalScrollProductModel(R.drawable.phone2,"Redmi 5A","Intel Core Processor","Rs. 5999"));
+        horizontalScrollProductModelList.add(new HorizontalScrollProductModel(R.drawable.phone3,"Redmi 5A","Intel Core Processor","Rs. 5999"));
+        horizontalScrollProductModelList.add(new HorizontalScrollProductModel(R.drawable.phone1,"Redmi 5A","Intel Core Processor","Rs. 5999"));
+        horizontalScrollProductModelList.add(new HorizontalScrollProductModel(R.drawable.phone2,"Redmi 5A","Intel Core Processor","Rs. 5999"));
+        horizontalScrollProductModelList.add(new HorizontalScrollProductModel(R.drawable.phone3,"Redmi 5A","Intel Core Processor","Rs. 5999"));
+        horizontalScrollProductModelList.add(new HorizontalScrollProductModel(R.drawable.phone1,"Redmi 5A","Intel Core Processor","Rs. 5999"));
+        horizontalScrollProductModelList.add(new HorizontalScrollProductModel(R.drawable.phone2,"Redmi 5A","Intel Core Processor","Rs. 5999"));
+        horizontalScrollProductModelList.add(new HorizontalScrollProductModel(R.drawable.phone3,"Redmi 5A","Intel Core Processor","Rs. 5999"));
+
+        HorizontalScrollProductAdapter horizontalScrollProductAdapter = new HorizontalScrollProductAdapter(horizontalScrollProductModelList);
+
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext());
+        linearLayoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
+        horizontalProductRecycler.setLayoutManager(linearLayoutManager1);
+
+        horizontalProductRecycler.setAdapter(horizontalScrollProductAdapter);
+        horizontalScrollProductAdapter.notifyDataSetChanged();
+
+
+
+
+        /* Code ends for Horizontal Product Items*/
+        /* COde for Grid Layout */
+
+     TextView grid_title = view.findViewById(R.id.grid_lproduct_layout_title);
+     Button grid_btn = view.findViewById(R.id.grid_product_layout_view_all_btn);
+     GridView gridView = view.findViewById(R.id.grid_product_layout_gridView);
+
+     gridView.setAdapter(new GridProductLayoutAdapter(horizontalScrollProductModelList));
 
 
 
 
 
-        /* Code ends for strip add */
+
+        /* Ciode ends here for Grid Layout */
+
 
         return view;
     }
