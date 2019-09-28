@@ -43,14 +43,14 @@
     <GridView
         android:id="@+id/grid_product_layout_gridView"
         android:layout_width="0dp"
-        android:layout_height="350dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="400dp"
         android:background="#aaaaaa"
         android:horizontalSpacing="1dp"
         android:numColumns="2"
         android:verticalSpacing="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/grid_product_layout_view_all_btn" />
 </android.support.constraint.ConstraintLayout>
