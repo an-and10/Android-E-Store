@@ -7,10 +7,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 
 import java.util.ArrayList;
@@ -23,6 +26,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private static Boolean ALREADYADDED_TO_WISHLIST =false;
     private ViewPager productDetailsViewPager;
     private TabLayout productDetailsTabLayout;
+
+
+    // Rating Layout//
+    private LinearLayout rateNowContainer;
 
 
 
@@ -42,8 +49,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         productDetailsViewPager = findViewById(R.id.product_details_view_pager);
         productDetailsTabLayout  =findViewById(R.id.product_details_tab_layout);
 
-
-
         List<Integer> productImages = new ArrayList<>();
         productImages.add(R.drawable.phone1);
         productImages.add(R.drawable.phone2);
@@ -54,7 +59,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         productImagesViewPager.setAdapter(productImageAdapter);
 
         viewPagerIndicator.setupWithViewPager(productImagesViewPager,true);
-
         add_to_wishList_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,9 +96,40 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
+        // Rating Now Layout//
+        rateNowContainer = findViewById(R.id.rate_now_container);
+        for (int i =0;i<rateNowContainer.getChildCount();i++)
+        {
+            final int star_position = i;
+            rateNowContainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setRating(star_position);
+
+                }
+            });
+
+        }
 
 
 
+
+
+
+    }
+
+    private void setRating(int star_position)
+    {
+        for(int x =0;x <rateNowContainer.getChildCount();x++)
+        {
+            ImageView starbtn = (ImageView) rateNowContainer.getChildAt(x);
+            starbtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#bebebe")));
+            if(x<=star_position)
+            {
+                starbtn.setImageTintList(ColorStateList.valueOf(Color.parseColor("#000000")));
+            }
+
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -123,6 +158,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 
 }
