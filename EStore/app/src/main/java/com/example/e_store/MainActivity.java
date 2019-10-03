@@ -20,6 +20,15 @@ import android.widget.FrameLayout;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
         private FrameLayout frameLayout;
+        private static  final int HOMEFRAGMENT =0;
+        private static final  int CARTFRAGMENT =1;
+        private static  int CURRENTFRAGMENT;
+        private  static final  int ORDERFRAGMENT =2;
+        private static final int MYWISHLISTFRAGMENT=3;
+        private static final int MYREWARDSFRAGEMENT = 4;
+        private NavigationView navigationView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +43,14 @@ public class MainActivity extends AppCompatActivity
         frameLayout =  findViewById(R.id.frame_layout);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
-        setFragment(new HomeFragment());
+        setFragment(new HomeFragment(), HOMEFRAGMENT);
 
     }
 
@@ -51,14 +60,30 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
+            if(CURRENTFRAGMENT == HOMEFRAGMENT)
+            {
+                super.onBackPressed();
+            }else
+            {
+                getSupportActionBar().setDisplayShowTitleEnabled(true);
+                getSupportActionBar().setTitle("Flipkart");
+                invalidateOptionsMenu();
+                setFragment(new HomeFragment(),0);
+                navigationView.getMenu().getItem(0).setChecked(true);
+
+            }
+
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if(CURRENTFRAGMENT == HOMEFRAGMENT){
+            getMenuInflater().inflate(R.menu.main, menu);
+        }
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -75,11 +100,24 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.main_notification_icons) {
             return true;
         } else if (id == R.id.main_cart_icons) {
+            goToFragment("My Cart", new CartFragment(), CARTFRAGMENT);
+
             return true;
         }
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void goToFragment(String title, Fragment fragment,int fragmentNo) {
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle(title);
+        invalidateOptionsMenu();
+        setFragment(fragment, fragmentNo);
+        if(fragmentNo == CARTFRAGMENT) {
+            navigationView.getMenu().getItem(3).setChecked(true);
+        }
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -90,15 +128,23 @@ public class MainActivity extends AppCompatActivity
 
         if(id == R.id.nav_my_flipkart)
         {
-
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setTitle("Flipkart");
+            invalidateOptionsMenu();
+            setFragment(new HomeFragment(),0);
         }
         else if (id == R.id.nav_my_orders) {
-            // todo :: Handle orders
+                goToFragment("My Orders", new MyOrderFragment(), ORDERFRAGMENT);
         } else if (id == R.id.nav_my_rewards) {
-            // todo : :
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+          goToFragment("My Rewards", new MyRewardsFragment(),MYREWARDSFRAGEMENT );
         } else if (id == R.id.nav_my_cart) {
+            goToFragment("My Cart", new CartFragment(), CARTFRAGMENT);
+
 
         } else if (id == R.id.nav_my_wishlists) {
+            goToFragment("MyWishList", new MywishListFragment(),MYWISHLISTFRAGMENT);
 
         } else if (id == R.id.nav_my_account) {
 
@@ -110,9 +156,14 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-        private  void setFragment(Fragment fragment){
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(frameLayout.getId(), fragment);
-        fragmentTransaction.commit();
-        }
+        private  void setFragment(Fragment fragment, int fragmentNo){
+
+            CURRENTFRAGMENT = fragmentNo;
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+
+            fragmentTransaction.replace(frameLayout.getId(), fragment);
+            fragmentTransaction.commit();
+
+    }
 }
