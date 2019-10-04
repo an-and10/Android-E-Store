@@ -1,5 +1,6 @@
 package com.example.e_store;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -26,6 +28,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private static Boolean ALREADYADDED_TO_WISHLIST =false;
     private ViewPager productDetailsViewPager;
     private TabLayout productDetailsTabLayout;
+    private Button buyNowBtn;
+
 
 
     // Rating Layout//
@@ -48,6 +52,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         add_to_wishList_btn = findViewById(R.id.add_to_wishlist_btn);
         productDetailsViewPager = findViewById(R.id.product_details_view_pager);
         productDetailsTabLayout  =findViewById(R.id.product_details_tab_layout);
+        buyNowBtn = findViewById(R.id.buy_now_btn);
 
         List<Integer> productImages = new ArrayList<>();
         productImages.add(R.drawable.phone1);
@@ -110,13 +115,18 @@ public class ProductDetailsActivity extends AppCompatActivity {
             });
 
         }
-
-
-
-
-
-
+        buyNowBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent deliveryIntent = new Intent(ProductDetailsActivity.this, DeliveryActivity.class);
+                startActivity(deliveryIntent);
+            }
+        });
     }
+
+
+
+
 
     private void setRating(int star_position)
     {

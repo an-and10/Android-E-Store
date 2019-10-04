@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.e_store">
+    package="com.example.e_store" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,8 +10,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/flipkart_logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".OrderDetailsActivity"></activity>
+        android:theme="@style/AppTheme" >
+        <activity android:name=".MyAddressesActivity" >
+        </activity>
+        <activity
+            android:name=".AddAddressActivity"
+            android:theme="@style/ForgetProgressBar" />
+        <activity android:name=".DeliveryActivity" />
+        <activity android:name=".OrderDetailsActivity" />
         <activity android:name=".ProductDetailsActivity" />
         <activity android:name=".CategoryActivity" />
         <activity
@@ -25,7 +31,7 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".SplashActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

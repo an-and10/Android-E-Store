@@ -3,7 +3,6 @@ package com.example.e_store;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -57,7 +56,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.product_img);
-            orderIndicator = itemView.findViewById(R.id.order_indicator);
+            orderIndicator = itemView.findViewById(R.id.order_indicator_layout);
             deliveryStatus = itemView.findViewById(R.id.order_dilevery_date);
             productTitle = itemView.findViewById(R.id.product_title);
             rateNowContainer = itemView.findViewById(R.id.rate_now_container);

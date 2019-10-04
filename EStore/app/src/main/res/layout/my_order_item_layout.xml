@@ -34,7 +34,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/order_indicator"
+        android:id="@+id/order_indicator_layout"
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_marginStart="16dp"
@@ -54,9 +54,9 @@
         android:textSize="12sp"
 
         android:text="Expected Delivery to be on 2nd October"
-        app:layout_constraintBottom_toBottomOf="@+id/order_indicator"
-        app:layout_constraintStart_toEndOf="@+id/order_indicator"
-        app:layout_constraintTop_toTopOf="@+id/order_indicator" />
+        app:layout_constraintBottom_toBottomOf="@+id/order_indicator_layout"
+        app:layout_constraintStart_toEndOf="@+id/order_indicator_layout"
+        app:layout_constraintTop_toTopOf="@+id/order_indicator_layout" />
 
     <TextView
         android:id="@+id/textView14"
