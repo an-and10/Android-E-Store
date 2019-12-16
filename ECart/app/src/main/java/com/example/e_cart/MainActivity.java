@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity
         private static final int MYREWARDSFRAGEMENT = 4;
         private static final int MYACCOUNTFRAGMENT = 5;
         public  static  Boolean showCart = false;
+        public static  boolean resetMainActivity = false;
         private ImageView internet;
         private   Dialog SignInDialog;
         public static   DrawerLayout drawer;
@@ -150,6 +151,14 @@ public class MainActivity extends AppCompatActivity
         }else
         {
             navigationView.getMenu().getItem(navigationView.getMenu().size()-1).setEnabled(true);
+        }
+        if(resetMainActivity)
+        {
+            resetMainActivity =false;
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setTitle("Flipkart");
+            setFragment(new HomeFragment(), 0);
+            navigationView.getMenu().getItem(0).setChecked(true);
         }
 
         invalidateOptionsMenu();

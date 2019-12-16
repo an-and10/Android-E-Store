@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.res.ColorStateList;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,8 +80,11 @@ public class CartAdapter extends RecyclerView.Adapter {
                 String cuttedPrice = cartItemModelsList.get(position).getCutted_product_price();
                 long  offerAppliedNo = cartItemModelsList.get(position).getOffer_applied();
                 boolean inStock = cartItemModelsList.get(position).isInStock();
+                Long maxQuantity = cartItemModelsList.get(position).getMaxQuantity();
+                Long quantity = cartItemModelsList.get(position).getQuantity();
 
-                ((CartItemViewHolder)viewHolder).setProductDetails(productId,resource,title,freeCoupons,productPrice,cuttedPrice,offerAppliedNo, position,inStock);
+
+                ((CartItemViewHolder)viewHolder).setProductDetails(productId,resource,title,freeCoupons,productPrice,cuttedPrice,offerAppliedNo, position,inStock, String.valueOf(quantity), maxQuantity);
 
                 break;
             case CartItemModel.TOTAL_AMOUNT:
@@ -147,7 +151,8 @@ public class CartAdapter extends RecyclerView.Adapter {
             couponsLayout = itemView.findViewById(R.id.coupon_redemtions_layout);
 
         }
-        private  void setProductDetails(String productId, String  resource, String title, long freeCouponsNo, String productPrice, String cutted_product_price, long offers_applies_no, final int position,boolean inStock)
+        private  void setProductDetails(String productId, String  resource, String title, long freeCouponsNo, String productPrice, String cutted_product_price, long offers_applies_no, final int position, boolean inStock,
+                                        String productQuantity, final long maxQuantity)
         {
             Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions()).placeholder(R.drawable.ph).into(productImage);
             productTitle.setText(title);
@@ -171,6 +176,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                     offers_applied.setVisibility(View.VISIBLE);
                     offers_applied.setText(offers_applies_no+" Offers Applied");
                 }
+                quantity.setText("Qty: "+ productQuantity);
 
                 quantity.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -181,6 +187,7 @@ public class CartAdapter extends RecyclerView.Adapter {
                         final EditText quantityNo = quantityDialog.findViewById(R.id.quantity_call);
                         Button cancelBtn = quantityDialog.findViewById(R.id.DialogcancelBtn);
                         Button confirmBtn = quantityDialog.findViewById(R.id.DialogConfirmBtn);
+                        quantityNo.setHint("Max-Quantity:" + String.valueOf(maxQuantity));
                         cancelBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -191,10 +198,35 @@ public class CartAdapter extends RecyclerView.Adapter {
                         confirmBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                //  Toast.makeText(itemView.getContext(), "Qty :"+ quantityNo.getText(), Toast.LENGTH_SHORT).show();
-                                quantity.setText("Qty: "+ quantityNo.getText());
+                                if(!TextUtils.isEmpty(quantityNo.getText())) {
+
+                                    if (Long.valueOf(quantityNo.getText().toString()) <= maxQuantity && Long.valueOf(quantityNo.getText().toString()) != 0) {
+
+                                        if(itemView.getContext() instanceof  MainActivity){
+
+                                            DBQueries.cartItemModelList.get(position).setQuantity(Integer.parseInt((quantityNo.getText().toString())));
+
+                                        }else{
+                                            if (DeliveryActivity.fromCart) {
+                                                DBQueries.cartItemModelList.get(position).setQuantity(Integer.parseInt((quantityNo.getText().toString())));
+
+                                            } else {
+                                                DeliveryActivity.cartItemModelList.get(position).setQuantity(Integer.parseInt((quantityNo.getText().toString())));
+                                            }
+                                        }
+
+
+                                        quantity.setText("Qty: " + quantityNo.getText());
+
+                                        Toast.makeText(itemView.getContext(), "Selected:" + quantityNo.getText().toString(), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(itemView.getContext(), "Invalid Quantity Selection, Select min quantity", Toast.LENGTH_SHORT).show();
+
+                                    }
+
+
+                                }
                                 quantityDialog.dismiss();
-                                Toast.makeText(itemView.getContext(), "Selected:"+quantityNo.getText().toString(), Toast.LENGTH_SHORT).show();
                             }
                         });
                         quantityDialog.show();
@@ -268,8 +300,9 @@ public class CartAdapter extends RecyclerView.Adapter {
 
             LinearLayout parent = (LinearLayout) cartTotalAmount.getParent().getParent();
             if(totalItemPrice1 == 0)
+
             {
-                DBQueries.cartItemModelList.remove(DBQueries.cartItemModelList.size());
+                // DBQueries.cartItemModelList.remove(DBQueries.cartItemModelList.size());
                 parent.setVisibility(View.GONE);
             }else
             {

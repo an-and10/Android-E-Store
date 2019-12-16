@@ -31,6 +31,7 @@ import java.util.List;
 import static com.example.e_cart.DBQueries.CategoryModelList;
 
 
+import static com.example.e_cart.DBQueries.clearData;
 import static com.example.e_cart.DBQueries.lists;
 import static com.example.e_cart.DBQueries.loadCategories;
 import static com.example.e_cart.DBQueries.loadFragmentFirebase;
@@ -200,9 +201,7 @@ public class HomeFragment extends Fragment {
     {
 
         networkInfo = connectivityManager.getActiveNetworkInfo();
-        CategoryModelList.clear();
-        lists.clear();
-        loadedCategoriesName.clear();
+       clearData();
         if(networkInfo!=null && networkInfo.isConnected()==true) {
             MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             internet.setVisibility(View.GONE);

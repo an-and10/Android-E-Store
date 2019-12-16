@@ -64,7 +64,7 @@ public class HorizontalScrollProductAdapter  extends RecyclerView.Adapter<Horizo
 
         public void setData(final String id, String resource, String title, String desc, String price)
         {
-            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions()).placeholder(R.mipmap.home).into(product_image);
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions()).placeholder(R.mipmap.ph).into(product_image);
             product_title.setText(title);
             product_desc.setText(desc);
             product_price.setText("Rs: "+ price +"/-");

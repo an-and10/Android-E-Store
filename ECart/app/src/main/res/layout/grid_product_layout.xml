@@ -74,25 +74,4 @@
 
     </androidx.gridlayout.widget.GridLayout>
 
-    <View
-        android:id="@+id/divider11"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-
-        android:background="#E65050"
-        app:layout_constraintBottom_toBottomOf="@+id/gridLayout"
-        app:layout_constraintEnd_toEndOf="@+id/gridLayout"
-        app:layout_constraintStart_toStartOf="@+id/gridLayout"
-        app:layout_constraintTop_toTopOf="@+id/gridLayout" />
-
-    <View
-        android:id="@+id/divider12"
-        android:layout_width="1dp"
-        android:layout_height="0dp"
-        android:background="#E65050"
-        app:layout_constraintBottom_toBottomOf="@+id/gridLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/gridLayout"
-        app:layout_constraintTop_toTopOf="@+id/gridLayout" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

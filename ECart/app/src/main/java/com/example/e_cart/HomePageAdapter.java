@@ -255,7 +255,7 @@ public class HomePageAdapter extends RecyclerView.Adapter {
         }
         private void setStripAd(String resource,String color)
         {
-            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.mipmap.home)).into(stripAdImage);
+            Glide.with(itemView.getContext()).load(resource).apply(new RequestOptions().placeholder(R.mipmap.ph)).into(stripAdImage);
             stripAdContainer.setBackgroundColor(Color.parseColor(color));
             /* code for  Ends here for Strip Add image */
         }

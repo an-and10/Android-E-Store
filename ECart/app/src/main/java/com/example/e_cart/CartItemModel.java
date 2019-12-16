@@ -1,5 +1,8 @@
 package com.example.e_cart;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CartItemModel {
     public static final int CART_ITEM = 0;
     public static final int TOTAL_AMOUNT = 1;
@@ -15,10 +18,13 @@ public class CartItemModel {
     private String product_images;
     private long free_coupons;
     private long quantity;
+    private Long maxQuantity;
     private String productId;
     private long offer_applied;
     private long coupons_applied;
     private boolean inStock;
+    private List<String> qtyIds ;
+
 ////    // Cart item variable ends//
 
     public String getProductId() {
@@ -37,7 +43,16 @@ public class CartItemModel {
         this.inStock = inStock;
     }
 
-    public CartItemModel(int type, String productId, String product_title, String product_price, String cutted_product_price, String product_images, long free_coupons, long quantity, long offer_applied, long coupons_applied, boolean inStock) {
+    public Long getMaxQuantity() {
+        return maxQuantity;
+    }
+
+    public void setMaxQuantity(Long maxQuantity) {
+        this.maxQuantity = maxQuantity;
+    }
+
+    public CartItemModel(int type, String productId, String product_title, String product_price, String cutted_product_price, String product_images, long free_coupons, long quantity, long offer_applied, long coupons_applied, boolean inStock, long maxQuantity) {
+        this.maxQuantity = maxQuantity;
         this.type = type;
         this.productId = productId;
         this.product_title = product_title;
@@ -49,6 +64,16 @@ public class CartItemModel {
         this.offer_applied = offer_applied;
         this.coupons_applied = coupons_applied;
         this.inStock = inStock;
+        qtyIds = new ArrayList<>();
+
+    }
+
+    public List<String> getQtyIds() {
+        return qtyIds;
+    }
+
+    public void setQtyIds(List<String> qtyIds) {
+        this.qtyIds = qtyIds;
     }
 
     public int getType() {

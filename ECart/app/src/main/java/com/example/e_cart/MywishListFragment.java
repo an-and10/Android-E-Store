@@ -55,6 +55,7 @@ public class MywishListFragment extends Fragment {
                 DBQueries.loadWishList(getContext(),LoadingDialog,true );
             }else
                 LoadingDialog.dismiss();
+
          wishlistAdapter = new WishlistAdapter(DBQueries.wishlistModelList, true);
         myWishListRecylerView.setAdapter(wishlistAdapter);
         wishlistAdapter.notifyDataSetChanged();

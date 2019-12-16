@@ -5,6 +5,7 @@ public class AddressModel {
     private String address;
     private String pincode;
     private  Boolean selected;
+    private String mobile;
 
 
     public Boolean getSelected() {
@@ -15,11 +16,20 @@ public class AddressModel {
         this.selected = selected;
     }
 
-    public AddressModel(String name, String address, String pincode, Boolean selected) {
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public AddressModel(String name, String address, String pincode, Boolean selected, String mobile) {
         this.name = name;
         this.address = address;
         this.pincode = pincode;
         this.selected = selected;
+        this.mobile = mobile;
     }
 
     public String getName() {

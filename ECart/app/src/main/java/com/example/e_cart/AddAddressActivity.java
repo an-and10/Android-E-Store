@@ -108,6 +108,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
                                     Map<String,Object> updateAddress = new HashMap<>();
                                     updateAddress.put("list_size", (long)DBQueries.addressModelList.size()+1);
+                                    updateAddress.put("mobile_no_"+String.valueOf(DBQueries.addressModelList.size()+1), mobile.getText().toString());
 
                                     updateAddress.put("full_name_"+String.valueOf((long)DBQueries.addressModelList.size()+1), name.getText().toString() + " - "+ mobile.getText().toString());
                                     updateAddress.put("address_"+String.valueOf((long)DBQueries.addressModelList.size()+1), full_address);
@@ -128,7 +129,7 @@ public class AddAddressActivity extends AppCompatActivity {
 
                                                     DBQueries.addressModelList.get(DBQueries.selectedAddress).setSelected(false);
                                                 }
-                                                DBQueries.addressModelList.add(new AddressModel(name.getText().toString() + " - " + mobile.getText().toString(), full_address, pincode.getText().toString(), true));
+                                                DBQueries.addressModelList.add(new AddressModel(name.getText().toString() , full_address, pincode.getText().toString(), true, mobile.getText().toString()));
 
                                                 if(getIntent().getStringExtra("INTENT").equals("DELIVERYINTENT"))
                                                 {

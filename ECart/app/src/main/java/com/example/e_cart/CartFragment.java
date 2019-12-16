@@ -55,17 +55,7 @@ public class CartFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         cartItemsRecyclerView.setLayoutManager(linearLayoutManager);
 
-        if(DBQueries.cartItemModelList.size() == 0)
-        {
-            DBQueries.cartList.clear();
-            DBQueries.loadCart(getContext(),LoadingDialog,true ,new TextView(getContext()), totalAmount);
-        }else {
-            if(DBQueries.cartItemModelList.get(DBQueries.cartItemModelList.size()-1).getType()==CartItemModel.TOTAL_AMOUNT){
-                LinearLayout parent = (LinearLayout) totalAmount.getParent().getParent();
-                parent.setVisibility(View.VISIBLE);
-            }
-            LoadingDialog.dismiss();
-        }
+
         cartAdapter = new CartAdapter(DBQueries.cartItemModelList, totalAmount, true);
         cartItemsRecyclerView.setAdapter(cartAdapter);
         cartAdapter.notifyDataSetChanged();
@@ -73,6 +63,8 @@ public class CartFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DeliveryActivity.cartItemModelList = new ArrayList<>();
+                DeliveryActivity.fromCart= true;
+
                 for(int i=0;i< DBQueries.cartItemModelList.size() ; i++)
                 {
                     CartItemModel cartItemModel = DBQueries.cartItemModelList.get(i);
@@ -97,4 +89,22 @@ public class CartFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        cartAdapter.notifyDataSetChanged();
+
+        if(DBQueries.cartItemModelList.size() == 0)
+        {
+            DBQueries.cartList.clear();
+            DBQueries.loadCart(getContext(),LoadingDialog,true ,new TextView(getContext()), totalAmount);
+        }else {
+
+            if(DBQueries.cartItemModelList.get(DBQueries.cartItemModelList.size()-1).getType()==CartItemModel.TOTAL_AMOUNT){
+                LinearLayout parent = (LinearLayout) totalAmount.getParent().getParent();
+                parent.setVisibility(View.VISIBLE);
+            }
+            LoadingDialog.dismiss();
+        }
+    }
 }

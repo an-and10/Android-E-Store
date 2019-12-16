@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.example.e_cart.HomeFragment.swipeRefreshLayout;
+import static com.example.e_cart.ProductDetailsActivity.add_to_wishList_btn;
 import static com.example.e_cart.ProductDetailsActivity.productId;
 
 
@@ -135,7 +136,8 @@ public class DBQueries {
                                                 (long) documentSnapshot.get("total_ratings_" + x),
                                                 documentSnapshot.get("product_price_" + x).toString(),
                                                 documentSnapshot.get("product_cutted_price_" + x).toString(),
-                                                (boolean) documentSnapshot.get("product_COD_" + x)
+                                                (boolean) documentSnapshot.get("product_COD_" + x),
+                                                (boolean) documentSnapshot.get("in_stock_"+ x)
                                         ));
 
 
@@ -179,48 +181,56 @@ public class DBQueries {
     }
 
     public static void loadWishList(final Context context, final Dialog dialog, final boolean loadProductData) {
-        wishList.clear();
 
+        Toast.makeText(context, "Size of Model WishList "+ wishlistModelList.size(), Toast.LENGTH_SHORT).show();
         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_WISHLIST")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     for (long i = 0; i < (long) task.getResult().get("list_size"); i++) {
-                        if (loadProductData) {
-                            final String productid = task.getResult().get("Product_ID_" + i).toString();
-                            wishlistModelList.clear();
-                            wishList.add(productid);
-                            if (DBQueries.wishList.contains(productId)) {
-                                ProductDetailsActivity.ALREADYADDED_TO_WISHLIST = true;
-                                if (ProductDetailsActivity.add_to_wishList_btn != null) {
-                                    ProductDetailsActivity.add_to_wishList_btn.setSupportImageTintList(context.getResources().getColorStateList(R.color.colorPrimary));
-                                }
+//                      //  wishList.add(task.getResult().get("Product_ID_"+i).toString());
+//                        wishList.add(task.getResult().get("Product_ID_"+i).toString());
 
-                            } else {
-                                ProductDetailsActivity.ALREADYADDED_TO_WISHLIST = false;
-                                if (ProductDetailsActivity.add_to_wishList_btn != null) {
-                                    ProductDetailsActivity.add_to_wishList_btn.setSupportImageTintList(context.getResources().getColorStateList(R.color.black));
-                                }
+                        if (DBQueries.wishList.contains(productId)) {
+                            ProductDetailsActivity.ALREADYADDED_TO_WISHLIST = true;
+                            if (ProductDetailsActivity.add_to_wishList_btn != null) {
+                                ProductDetailsActivity.add_to_wishList_btn.setSupportImageTintList(context.getResources().getColorStateList(R.color.colorPrimary));
                             }
+
+                        } else {
+                            ProductDetailsActivity.ALREADYADDED_TO_WISHLIST = false;
+                            if (ProductDetailsActivity.add_to_wishList_btn != null) {
+                                ProductDetailsActivity.add_to_wishList_btn.setSupportImageTintList(context.getResources().getColorStateList(R.color.black));
+                            }
+                        }
+
+                        if (loadProductData) {
+                            wishList.clear();
+                            wishList.add(productId);
+                            final String productid = task.getResult().get("Product_ID_" + i).toString();
                             firebaseFirestore.collection("PRODUCTS").document(productid).get()
                                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                             if (task.isSuccessful()) {
 
-                                                wishlistModelList.add(new WishlistModel(productid, task.getResult().get("product_image_1").toString(),
+                                                wishlistModelList.add(new WishlistModel(productid,
+                                                        task.getResult().get("product_image_1").toString(),
                                                         (long) task.getResult().get("free_coupons"),
                                                         task.getResult().get("Avg_rating").toString(),
                                                         task.getResult().get("product_title").toString(),
                                                         (long) task.getResult().get("total_ratings"),
                                                         task.getResult().get("product_price").toString(),
                                                         task.getResult().get("cutted_price").toString(),
-                                                        (boolean) task.getResult().get("COD")
+                                                        (boolean) task.getResult().get("COD"),
+                                                        (boolean) task.getResult().get("in_stock")
                                                 ));
+
                                                 MywishListFragment.wishlistAdapter.notifyDataSetChanged();
 
                                             } else {
+                                                Toast.makeText(context, "Error in Connectiong", Toast.LENGTH_SHORT).show();
 
                                             }
                                         }
@@ -249,10 +259,12 @@ public class DBQueries {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
+
                     if (wishlistModelList.size() != 0) {
                         wishlistModelList.remove(index);
                         MywishListFragment.wishlistAdapter.notifyDataSetChanged();
                     }
+
                     ProductDetailsActivity.ALREADYADDED_TO_WISHLIST = false;
                     Toast.makeText(context, "Removed SuccessFully", Toast.LENGTH_SHORT).show();
 
@@ -264,6 +276,8 @@ public class DBQueries {
                     wishList.add(index, removeProdcutId);
                     Toast.makeText(context, "Error:" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
+               // add_to_wishList_btn.setEnabled(true);
+
                 if (ProductDetailsActivity.add_to_wishList_btn != null)
 //                    ProductDetailsActivity.add_to_wishList_btn.setEnabled(true);
                     ProductDetailsActivity.running_wishlist_query = false;
@@ -308,8 +322,7 @@ public class DBQueries {
 
     public static  void loadCart(final Context context, final Dialog dialog, final Boolean loadProductData, final TextView badgeCount, final TextView cartTotalAmount)
     {
-      //  cartList.clear();
-
+        cartList.clear();
         firebaseFirestore.collection("USERS").document(FirebaseAuth.getInstance().getUid()).collection("USER_DATA").document("MY_CART")
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -342,10 +355,11 @@ public class DBQueries {
                                                         task.getResult().get("product_image_1").toString(),
                                                         (long)task.getResult().get("free_coupons"),
                                                         (long)1,
-                                                        (long)1,
-                                                        (long)1,
-                                                        (boolean)task.getResult().get("in_stock")));
-                                                if(cartList.size()==1)
+                                                        (long)0,
+                                                        (long)0,
+                                                        (boolean)task.getResult().get("in_stock"),
+                                                        (long)task.getResult().get("max-quantity")));
+                                                if(cartList.size() ==1)
                                                 {
                                                         cartItemModelList.add(new CartItemModel(CartItemModel.TOTAL_AMOUNT));
                                                     LinearLayout parent = (LinearLayout) cartTotalAmount.getParent().getParent();
@@ -355,6 +369,9 @@ public class DBQueries {
                                                 {
 
                                                     cartItemModelList.clear();
+                                                    LinearLayout parent = (LinearLayout) cartTotalAmount.getParent().getParent();
+                                                    parent.setVisibility(View.INVISIBLE);
+
                                                 }
                                                 CartFragment.cartAdapter.notifyDataSetChanged();
                                                 Toast.makeText(context, "Size of cart:"+cartItemModelList.size(), Toast.LENGTH_SHORT).show();
@@ -448,7 +465,8 @@ public class DBQueries {
                                  addressModelList.add(new AddressModel(task.getResult().get("full_name_"+i).toString(),
                                         task.getResult().get("address_"+i).toString(),
                                         task.getResult().get("pincode_"+i).toString(),
-                                        (boolean)task.getResult().get("selected_"+i)));
+                                        (boolean)task.getResult().get("selected_"+i),
+                                         task.getResult().get("mobile_no_"+i).toString()));
                                 if((boolean)task.getResult().get("selected_"+i))
                                 {
                                         selectedAddress  = Integer.parseInt(String.valueOf(i-1));
@@ -476,6 +494,9 @@ public class DBQueries {
         wishList.clear();
         cartList.clear();
         cartItemModelList.clear();
+        myRatedId.clear();
+        myRating.clear();
+        addressModelList.clear();
     }
 
 }
